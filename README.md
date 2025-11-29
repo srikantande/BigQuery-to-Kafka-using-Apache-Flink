@@ -87,6 +87,14 @@ external-config/config.properties
 
 external-config/schema.json
 
+## Building JAR file
+```
+mvn clean package 
+```
+### Shipping the JAR, gcp_serviceaccount_key.json, schema.json, & config.properties
+
+Ship the target/bigquery-to-kafka-flink-1.0-SNAPSHOT-shaded.jar gcp_serviceaccount_key.json, schema.json, & config.properties files to Apache Flink server
+
 ## Running Apache Flink Pipeline job
 
 ### Stage the required files
@@ -130,3 +138,107 @@ Refering to the source BQ table DDL and destinaton Kafka messahe value rewrite t
 $ flink run /opt/flink/bigquery-to-kafka-flink-1.0-SNAPSHOT.jar /opt/flink/config.properties
 ```
 
+## Annexure
+
+### schema.json built based on following DDL of Bigquery Table
+```
+  id INT64,
+  imdb_id STRING,
+  popularity STRING,
+  vote_average STRING,
+  vote_count STRING,
+  imdb_rating STRING,
+  imdb_votes STRING,
+  title STRING,
+  original_title STRING,
+  tagline STRING,
+  overview STRING,
+  budget STRING,
+  revenue STRING,
+  runtime STRING,
+  status STRING,
+  release_date STRING,
+  original_language STRING,
+  `cast` STRING,
+  director STRING,
+  director_of_photography STRING,
+  writers STRING,
+  producers STRING,
+  music_composer STRING,
+  genres STRING,
+  production_companies STRING,
+  production_countries STRING,
+  spoken_languages STRING,
+  poster_path STRING,
+  __op STRING
+```
+
+Sample select query JSON output of movie id 431150
+```
+[{
+  "id": "431150",
+  "imdb_id": "tt0068436",
+  "popularity": "1.686",
+  "vote_average": "2.0",
+  "vote_count": "1.0",
+  "imdb_rating": "4.8",
+  "imdb_votes": "20.0",
+  "title": "La curiosa",
+  "original_title": "La curiosa",
+  "tagline": "",
+  "overview": "",
+  "budget": "0.0",
+  "revenue": "0.0",
+  "runtime": "0.0",
+  "status": "Released",
+  "release_date": "1973-01-24",
+  "original_language": "es",
+  "cast": "Roberto Daniel, José Yepes, Rafaela Aparicio, Katy Vadillo, Isabel Pallarés, Ingrid Rabel, Verónica Llimerá, Vicente Roca, José Riesgo, Francisco Ortuño, Mirta Miller, Gustavo Casado, Guadalupe Muñoz Sampedro, Paloma Juanes, Valentina Gutiérrez, Ángel Picazo, Nené Morales, José Fernández, Rosita Fuster, Paco Lara, Cristino Almodóvar, Francisco Agudín, Fabián Conde, Rosa Fontana, Alfonso del Real, Antonio Cintado, E.T. Ruiz, Asunción Aranda, Esther Santana, Pilar Gómez Ferrer, María Isbert, Yolanda Ríos, Manuel de Blas, Carmen Martínez Sierra, Paquita Ruiz, Simón Arriaga, Liliane Meric, Luis Coromina, Máximo Valverde, Luis Barbero, Jimmy Arnau, Betsabé Ruiz, Mari Carmen Prendes, Mari Carmen Duque, Paca Gabaldón, Mery Leyva, Pepita Jiménez, Josele Román, Patty Shepard, Lola Tejela, Beni Deus, Pedro Valentín, José María Fra",
+  "director": "Vicente Escrivá",
+  "director_of_photography": "",
+  "writers": "Vicente Escrivá",
+  "producers": "",
+  "music_composer": "",
+  "genres": "Comedy",
+  "production_companies": "Aspa",
+  "production_countries": "Spain",
+  "spoken_languages": "Español",
+  "poster_path": "/A1bL8cYn1mhKlE2TcovpPj5HqP4.jpg",
+  "__op": "r"
+}] 
+```
+
+### Following is the sample message
+```
+Key (String): 431150
+Value (JSON): {
+"id": "431150",
+"imdb_id": "tt0068436",
+"popularity": 1.686,
+"vote_average": 2.0,
+"vote_count": 1,
+"imdb_rating": 4.8,
+"imdb_votes": 20,
+"title": "La curiosa",
+"original_title": "La curiosa",
+"tagline": "",
+"overview": "",
+"budget": 0,
+"revenue": 0,
+"runtime": 0,
+"status": "Released",
+"release_date": "1973-01-24",
+"original_language": "es",
+"cast": "Roberto Daniel, José Yepes, Rafaela Aparicio, Katy Vadillo, Isabel Pallarés, Ingrid Rabel, Verónica Llimerá, Vicente Roca, José Riesgo, Francisco Ortuño, Mirta Miller, Gustavo Casado, Guadalupe Muñoz Sampedro, Paloma Juanes, Valentina Gutiérrez, Ángel Picazo, Nené Morales, José Fernández, Rosita Fuster, Paco Lara, Cristino Almodóvar, Francisco Agudín, Fabián Conde, Rosa Fontana, Alfonso del Real, Antonio Cintado, E.T. Ruiz, Asunción Aranda, Esther Santana, Pilar Gómez Ferrer, María Isbert, Yolanda Ríos, Manuel de Blas, Carmen Martínez Sierra, Paquita Ruiz, Simón Arriaga, Liliane Meric, Luis Coromina, Máximo Valverde, Luis Barbero, Jimmy Arnau, Betsabé Ruiz, Mari Carmen Prendes, Mari Carmen Duque, Paca Gabaldón, Mery Leyva, Pepita Jiménez, Josele Román, Patty Shepard, Lola Tejela, Beni Deus, Pedro Valentín, José María Fra",
+"director": "Vicente Escrivá",
+"director_of_photography": "",
+"writers": "Vicente Escrivá",
+"producers": "",
+"music_composer": "",
+"genres": "Comedy",
+"production_companies": "Aspa",
+"production_countries": "Spain",
+"spoken_languages": "Español",
+"poster_path": "/A1bL8cYn1mhKlE2TcovpPj5HqP4.jpg"
+}
+```
