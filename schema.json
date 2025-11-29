@@ -1,9 +1,9 @@
 {
   "sourceTableName": "bigquery_source",
   "sinkTableName": "kafka_sink",
-  "bigQueryProject": "sriprojectgcp2",
-  "bigQueryDataset": "dataagg",
-  "bigQueryTable": "cdcdataagg",
+  "bigQueryProject": "gcp_bq_projectName",
+  "bigQueryDataset": "gcp_bq_dataSetName",
+  "bigQueryTable": "gcp_bq_tableName",
   "kafkaTopic": "flinkTopic_cdcdataagg",
   "columns": [
     {
