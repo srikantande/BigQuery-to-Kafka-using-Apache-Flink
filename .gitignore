@@ -16,3 +16,8 @@ pom-target/
 .project
 .classpath
 
+# Git Ignore itself
+.gitignore
+
+# dependency-reduced-pom.xml
+dependency-reduced-pom.xml
