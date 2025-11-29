@@ -1,0 +1,207 @@
+{
+  "sourceTableName": "bigquery_source",
+  "sinkTableName": "kafka_sink",
+  "bigQueryProject": "sriprojectgcp2",
+  "bigQueryDataset": "dataagg",
+  "bigQueryTable": "cdcdataagg",
+  "kafkaTopic": "flinkTopic_cdcdataagg",
+  "columns": [
+    {
+      "name": "id",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": false,
+      "keyField": true
+    },
+    {
+      "name": "imdb_id",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false,
+      "transform": "NULLIF(${column}, '')"
+    },
+    {
+      "name": "popularity",
+      "sourceType": "STRING",
+      "sinkType": "DOUBLE",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "vote_average",
+      "sourceType": "STRING",
+      "sinkType": "DOUBLE",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "vote_count",
+      "sourceType": "STRING",
+      "sinkType": "BIGINT",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "imdb_rating",
+      "sourceType": "STRING",
+      "sinkType": "DOUBLE",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "imdb_votes",
+      "sourceType": "STRING",
+      "sinkType": "BIGINT",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "title",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": false,
+      "keyField": false
+    },
+    {
+      "name": "original_title",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "tagline",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "overview",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "budget",
+      "sourceType": "STRING",
+      "sinkType": "BIGINT",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "revenue",
+      "sourceType": "STRING",
+      "sinkType": "BIGINT",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "runtime",
+      "sourceType": "STRING",
+      "sinkType": "BIGINT",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "status",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "release_date",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "original_language",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "cast",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "director",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "director_of_photography",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "writers",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "producers",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "music_composer",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "genres",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "production_companies",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "production_countries",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "spoken_languages",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "poster_path",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": true,
+      "keyField": false
+    }
+  ]
+}
