@@ -208,7 +208,8 @@ Sample select query JSON output of movie id 431150
 }] 
 ```
 
-### Following is the sample message
+### Following is the sample Apache Kafka message
+
 ```
 Key (String): 431150
 Value (JSON): {
