@@ -89,5 +89,44 @@ external-config/schema.json
 
 ## Running Apache Flink Pipeline job
 
+### Stage the required files
+
+Copy and paste the following files e.g. path /opt/flink
+1. gcp_serviceaccount_key.json
+2. schema.json
+3. config.properties 
+
+**Update the config.properties with correct and absolute details for bigquery.credentials.path and schema.definition.path**
+
+### Update the schema.json as per source BigQuery table DDL
+
+Refering to the source BQ table DDL and destinaton Kafka messahe value rewrite the schema file accordingly. E.g:
+```
+  "columns": [
+    {
+      "name": "id",
+      "sourceType": "STRING",
+      "sinkType": "STRING",
+      "nullable": false,
+      "keyField": true
+    },
+    {
+      "name": "vote_average",
+      "sourceType": "STRING",
+      "sinkType": "DOUBLE",
+      "nullable": true,
+      "keyField": false
+    },
+    {
+      "name": "vote_count",
+      "sourceType": "STRING",
+      "sinkType": "BIGINT",
+      "nullable": true,
+      "keyField": false
+    },
+```
+### Execution of pipeline
+```
 $ flink run /opt/flink/bigquery-to-kafka-flink-1.0-SNAPSHOT.jar /opt/flink/config.properties
+```
 
