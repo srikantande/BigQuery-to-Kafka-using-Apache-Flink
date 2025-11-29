@@ -5,93 +5,89 @@ BigQuery to Kafka using Apache Flink
 
 **No coding needed!** Edit `config.properties` + `schema.json` for any BigQuery table.
 
-## 🔍 File Explanations (No Coding Knowledge Needed)
+## BigQuery to Kafka - Apache Flink Pipeline
 
-### `pom.xml` - 📦 The Build Recipe
+Move data from Google BigQuery to Apache Kafka using Apache Flink Table API. No coding required for new tables - just update a JSON file!
 
-<!-- 🎯 THIS IS YOUR PROJECT'S IDENTITY CARD -->
-<groupId>com.example</groupId>          <!-- 👨‍💼 Your company/team name -->
-<artifactId>bigquery-to-kafka-flink</artifactId>  <!-- 📱 App name -->
-<version>1.0-SNAPSHOT</version>         <!-- 🏷️ Version (SNAPSHOT = "work in progress") -->
+✅ Production-ready | ✅ Fully externalized config | ✅ Any BigQuery table | ✅ 12-Factor App compliant
 
-<!-- ⚙️ SETTINGS: Like choosing "Easy Mode" -->
-<properties>
-  <maven.compiler.source>11</maven.compiler.source>  <!-- ☕ Use Java 11 -->
-  <flink.version>1.18.0</flink.version>              <!-- 🔗 Flink version -->
-</properties>
+🎥 What This Does
 
-<!-- 🧩 PARTS LIST: Libraries this app needs -->
-<dependencies>
-  <!-- Flink "engine" for data processing -->
-  <dependency><groupId>org.apache.flink</groupId><artifactId>flink-streaming-java</artifactId></dependency>
-  
-  <!-- Flink "SQL translator" -->
-  <dependency><groupId>org.apache.flink</groupId><artifactId>flink-table-api-java-bridge</artifactId></dependency>
-  
-  <!-- 🔌 Kafka plugin -->
-  <dependency><groupId>org.apache.flink</groupId><artifactId>flink-connector-kafka</artifactId><version>3.1.0-1.18</version></dependency>
-  
-  <!-- 🔌 BigQuery plugin -->
-  <dependency><groupId>com.google.cloud.flink</groupId><artifactId>flink-1.17-connector-bigquery</artifactId></dependency>
-</dependencies>
+Reads any BigQuery table (batch or streaming)
 
-<!-- 🚫 "DO NOT PACK THESE" - Keeps config files OUTSIDE the app -->
-<resources>
-  <excludes>
-    <exclude>**/*.properties</exclude>  <!-- config.properties stays external -->
-    <exclude>**/*.json</exclude>        <!-- schema.json stays external -->
-  </excludes>
-</resources>
+Transforms data (type casting, null handling)
 
-<!-- 🔨 BUILD INSTRUCTIONS: Makes "fat JAR" with mainClass entry -->
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-shade-plugin</artifactId>  <!-- 📦 Bundles everything into 1 file -->
-  <mainClass>com.example.App</mainClass>       <!-- 🎮 Where to start the app -->
-</plugin>
+Writes to Kafka as JSON messages with string keys
 
-**What it does:** Downloads Flink + Kafka + BigQuery libraries, compiles Java, creates executable JAR.
+Zero code changes for new tables - edit schema.json only
 
-### `App.java` - ⚡ The Data Pipeline Brain
+## 📋 Prerequisites
+### ☁️ Google Cloud
 
-public class App {  // 🏠 Main application class
-    public static void main(String[] args) throws Exception {  // 🚀 Entry point
-        
-        // 📁 STEP 1: Read config files (external, not inside JAR)
-        String configPath = args.length > 0 ? args[0] : "./config.properties";
-        Properties config = loadConfiguration(configPath);  // 📖 Load settings
-        
-        // 📊 STEP 2: Read schema.json (defines your BigQuery table)
-        SchemaDefinition schema = loadSchemaDefinition(config.getProperty("schema.definition.path"));
-        
-        // 🛠️ STEP 3: Setup Flink (batch or streaming mode)
-        TableEnvironment tEnv = /* batch or streaming based on config */;
-        
-        // 🔧 STEP 4: Auto-generate SQL (magic happens here!)
-        String bigQueryDDL = generateBigQuerySourceDDL(config, schema);  // Creates BigQuery table
-        tEnv.executeSql(bigQuerySourceDDL);  // 📥 "Connect to BigQuery"
-        
-        String kafkaDDL = generateKafkaSinkDDL(config, schema);         // Creates Kafka table
-        tEnv.executeSql(kafkaDDL);  // 📤 "Connect to Kafka"
-        
-        // ▶️ STEP 5: Run pipeline! (BigQuery → Kafka)
-        String insertSQL = generateInsertSQL(schema);  // Auto-transforms data types
-        tEnv.executeSql(insertSQL);  // 🎉 Data flows!
-    }
-    
-    // 🛠️ Helper: Reads config.properties with ENV override support
-    private static Properties loadConfiguration(String configPath) { /* ... */ }
-    
-    // 📋 Helper: Parses schema.json (your table definition)
-    private static SchemaDefinition loadSchemaDefinition(String schemaPath) { /* ... */ }
-    
-    // ✨ Magic: Creates BigQuery table SQL from JSON schema
-    private static String generateBigQuerySourceDDL(Properties config, SchemaDefinition schema) { /* ... */ }
-    
-    // ✨ Magic: Creates Kafka table SQL from JSON schema  
-    private static String generateKafkaSinkDDL(Properties config, SchemaDefinition schema) { /* ... */ }
-    
-    // 🔄 Magic: Creates INSERT with type casting & null safety
-    private static String generateInsertSQL(SchemaDefinition schema) { /* ... */ }
-}
+1. GCP Service Account JSON key file
+2. BigQuery table access (Reader role)
+
+### 🐳 Kafka
+
+1. Kafka broker (e.g., srilab.com:9092)
+2. Target topic (e.g., flinkTopic_cdcdataagg)
+
+### ⚡ Apache Flink 1.18
+
+1. Ready Apache Flink 1.18 setup
+
+## Explanation of pom.xml and App.java
+
+### pom.xml
+
+#### Java version:
+
+It tells Maven to compile the code using Java 11 (<maven.compiler.source>11</maven.compiler.source>).
+
+#### Dependencies:
+
+These are the external libraries your app needs to work.
+Flink streaming and table API for building streaming data apps.
+Kafka connector to read/write data from Apache Kafka.
+BigQuery connector to connect with Google BigQuery.
+Jackson library for handling JSON data.
+SLF4J for logging messages that help debug and monitor your app.
+
+### App.java
+
+#### Purpose
+
+This is your Java application code that runs the data pipeline moving records from BigQuery to Kafka using Flink.
+
+#### Reading Configs
+
+It reads config.properties and schema.json, which are outside the app JAR, so you can easily change configuration without touching the code.
+
+#### Main steps it performs
+
+Loads configuration properties (like Kafka address, BigQuery credentials location, table names).
+Loads a JSON file describing the BigQuery table's schema — which columns, their types, and how they map to the Kafka fields.
+Sets up Flink’s streaming or batch environment based on your config.
+Dynamically builds SQL commands (DDL and INSERT statements) based on the schema and config. This creates source and sink tables in Flink for BigQuery and Kafka.
+Runs the pipeline that reads from BigQuery, applies type conversions and null safety, and writes to Kafka as JSON messages.
+
+#### Flexibility & Maintainability
+
+Because all table and connection details live outside the compiled code, you can reuse this app for different BigQuery tables with no code change. Just update config files and schema definition.
+
+#### Logging
+
+It logs helpful info about each major step to STDOUT/console for easy debugging and monitoring.
+
+## config.properties
+
+external-config/config.properties
+
+## schema.json
+
+external-config/schema.json
+
+## Running Apache Flink Pipeline job
+
+$ flink run /opt/flink/bigquery-to-kafka-flink-1.0-SNAPSHOT.jar /opt/flink/config.properties
 
